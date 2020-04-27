@@ -10,7 +10,9 @@ export const initClient = () => {
   });
 
   const onInit = () => {
-    checkSignedIn();
+    console.log("Success");
+    //TODO go to dashboard page
+    // checkSignedIn();
   };
 
   const onError = () => {
@@ -45,4 +47,8 @@ export const renderButton = () => {
     onsuccess: onSuccess,
     onfailure: onFailure,
   });
+};
+
+export const signOut = () => {
+  return window.gapi.auth2.getAuthInstance().signOut();
 };

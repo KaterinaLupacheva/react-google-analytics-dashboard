@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { initClient, renderButton } from "./GoogleAuth/authUtils";
+import { queryReports } from "./GoogleAnalytics/gaQueries";
 
 function App() {
   useEffect(() => {
@@ -19,6 +20,7 @@ function App() {
     <div className="App">
       <h2>Google Analytics Dashboard</h2>
       <div id="signin-button"></div>
+      <button onClick={queryReports}>Get REPORT</button>
     </div>
   );
 }
