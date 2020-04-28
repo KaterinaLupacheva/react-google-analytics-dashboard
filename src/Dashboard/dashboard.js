@@ -1,10 +1,11 @@
 import React from "react";
-import DayUsersReport from "./dayUsersReport";
+import DayVisitsReport from "./dayVisitsReport";
 
 const DashBoard = () => {
   return (
     <>
-      <DayUsersReport />
+      <DayVisitsReport metric={"ga:users"} title={"Users"} />
+      <DayVisitsReport metric={"ga:sessions"} title={"Sessions"} />
     </>
   );
 };

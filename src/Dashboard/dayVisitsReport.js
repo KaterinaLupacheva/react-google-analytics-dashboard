@@ -4,7 +4,7 @@ import { format, addDays } from "date-fns";
 import { ChartWrapper } from "./styles";
 import CustomDatePicker from "./datepicker";
 
-const DayUsersReport = () => {
+const DayVisitsReport = (props) => {
   const INITIAL_STATE = {
     labels: [],
     values: [],
@@ -32,7 +32,7 @@ const DayUsersReport = () => {
               ],
               metrics: [
                 {
-                  expression: "ga:users",
+                  expression: props.metric,
                 },
               ],
               dimensions: [
@@ -76,7 +76,7 @@ const DayUsersReport = () => {
     labels: reportData.labels,
     datasets: [
       {
-        label: "Users per day",
+        label: `${props.title} per day`,
         fill: false,
         lineTension: 0.1,
         backgroundColor: "rgba(75,192,192,0.4)",
@@ -129,7 +129,7 @@ const DayUsersReport = () => {
 
   return (
     <>
-      <h3>Users per day</h3>
+      <h2>{`${props.title} per day`}</h2>
       <CustomDatePicker
         placeholder={"Start date"}
         date={startDate}
@@ -149,4 +149,4 @@ const DayUsersReport = () => {
   );
 };
 
-export default DayUsersReport;
+export default DayVisitsReport;
