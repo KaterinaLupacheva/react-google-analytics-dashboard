@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Line } from "react-chartjs-2";
-import { format, addDays } from "date-fns";
+import { Pie } from "react-chartjs-2";
 import { ChartWrapper } from "./styles";
+import { format, addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
 
-const DayVisitsReport = (props) => {
+const CountriesReport = () => {
   const INITIAL_STATE = {
     labels: [],
     values: [],
@@ -12,6 +12,7 @@ const DayVisitsReport = (props) => {
   const [reportData, setReportData] = useState(INITIAL_STATE);
   const [startDate, setStartDate] = useState(addDays(new Date(), -10));
   const [endDate, setEndDate] = useState(new Date());
+  const [totalCoutries, setTotalCountries] = useState(0);
 
   const queryReports = () => {
     const VIEW_ID = "207194869";
@@ -32,12 +33,18 @@ const DayVisitsReport = (props) => {
               ],
               metrics: [
                 {
-                  expression: props.metric,
+                  expression: "ga:users",
                 },
               ],
               dimensions: [
                 {
-                  name: "ga:date",
+                  name: "ga:country",
+                },
+              ],
+              orderBys: [
+                {
+                  fieldName: "ga:users",
+                  sortOrder: "DESCENDING",
                 },
               ],
             },
@@ -49,22 +56,14 @@ const DayVisitsReport = (props) => {
 
   const displayResults = (response) => {
     const queryResult = response.result.reports[0].data.rows;
-    // const totalUsers = response.result.reports[0].data.totals[0].values[0];
+    setTotalCountries(queryResult.length);
     let labels = [];
     let values = [];
-    queryResult.forEach((row) => {
-      const date = row.dimensions[0];
-      labels.push(
-        format(
-          new Date(
-            date.substring(0, 4),
-            date.substring(4, 6) - 1,
-            date.substring(6, 8)
-          ),
-          "MMM. d, yyyy"
-        )
-      );
-      values.push(row.metrics[0].values[0]);
+    queryResult.forEach((row, idx) => {
+      if (idx < 5) {
+        labels.push(row.dimensions[0]);
+        values.push(row.metrics[0].values[0]);
+      }
     });
     setReportData({
       ...reportData,
@@ -77,51 +76,11 @@ const DayVisitsReport = (props) => {
     labels: reportData.labels,
     datasets: [
       {
-        label: `${props.title} per day`,
-        fill: false,
-        lineTension: 0.1,
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-        borderCapStyle: "butt",
-        borderDash: [],
-        borderDashOffset: 0.0,
-        borderJoinStyle: "miter",
-        pointBorderColor: "rgba(75,192,192,1)",
-        pointBackgroundColor: "#fff",
-        pointBorderWidth: 1,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-        pointHoverBorderColor: "rgba(220,220,220,1)",
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
         data: reportData.values,
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       },
     ],
-  };
-
-  const options = {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            suggestedMin: 0,
-          },
-        },
-      ],
-      xAxes: [
-        {
-          ticks: {
-            autoSkip: true,
-            maxTicksLimit: 7,
-          },
-        },
-      ],
-    },
-    maintainAspectRatio: false,
-    legend: {
-      display: false,
-    },
   };
 
   useEffect(() => {
@@ -130,7 +89,8 @@ const DayVisitsReport = (props) => {
 
   return (
     <>
-      <h2>{`${props.title} per day`}</h2>
+      <h2>Top 5 Countries by Users</h2>
+      <h4>{`Total countries - ${totalCoutries}`}</h4>
       <CustomDatePicker
         placeholder={"Start date"}
         date={startDate}
@@ -143,11 +103,11 @@ const DayVisitsReport = (props) => {
       />
       {reportData && (
         <ChartWrapper>
-          <Line data={data} options={options} width={100} height={250} />
+          <Pie data={data} />
         </ChartWrapper>
       )}
     </>
   );
 };
 
-export default DayVisitsReport;
+export default CountriesReport;
