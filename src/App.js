@@ -5,7 +5,7 @@ import {
   renderButton,
   checkSignedIn,
 } from "./GoogleAuth/authUtils";
-import { queryReports } from "./GoogleAnalytics/gaQueries";
+import Dashboard from "./Dashboard/dashboard";
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -33,11 +33,7 @@ function App() {
   return (
     <div className="App">
       <h2>Google Analytics Dashboard</h2>
-      {!isSignedIn ? (
-        <div id="signin-button"></div>
-      ) : (
-        <button onClick={queryReports}>Get REPORT</button>
-      )}
+      {!isSignedIn ? <div id="signin-button"></div> : <Dashboard />}
     </div>
   );
 }

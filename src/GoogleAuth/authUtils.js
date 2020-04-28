@@ -20,11 +20,6 @@ export const initClient = () => {
 
 export const checkSignedIn = () => {
   return window.gapi.auth2.getAuthInstance().isSignedIn.get();
-  // if (isSignedIn) {
-  //   window.gapi.auth2
-  //     .getAuthInstance()
-  //     .attachClickHandler("signin-button", {}, onSuccess, onFailure);
-  // }
 };
 
 const onSuccess = (googleUser) => {
