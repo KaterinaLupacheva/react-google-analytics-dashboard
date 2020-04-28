@@ -12,6 +12,7 @@ const DayVisitsReport = (props) => {
   const [reportData, setReportData] = useState(INITIAL_STATE);
   const [startDate, setStartDate] = useState(addDays(new Date(), -10));
   const [endDate, setEndDate] = useState(new Date());
+  const [average, setAverage] = useState(0);
 
   const queryReports = () => {
     const VIEW_ID = "207194869";
@@ -49,7 +50,8 @@ const DayVisitsReport = (props) => {
 
   const displayResults = (response) => {
     const queryResult = response.result.reports[0].data.rows;
-    // const totalUsers = response.result.reports[0].data.totals[0].values[0];
+    const total = response.result.reports[0].data.totals[0].values[0];
+    setAverage(parseInt(total / response.result.reports[0].data.rowCount));
     let labels = [];
     let values = [];
     queryResult.forEach((row) => {
@@ -131,6 +133,7 @@ const DayVisitsReport = (props) => {
   return (
     <>
       <h2>{`${props.title} per day`}</h2>
+      <h5>{`Average - ${average} ${props.title}`}</h5>
       <CustomDatePicker
         placeholder={"Start date"}
         date={startDate}
