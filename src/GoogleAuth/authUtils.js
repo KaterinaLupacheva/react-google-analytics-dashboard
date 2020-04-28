@@ -11,8 +11,6 @@ export const initClient = () => {
 
   const onInit = () => {
     console.log("Success");
-    //TODO go to dashboard page
-    // checkSignedIn();
   };
 
   const onError = () => {
@@ -20,13 +18,13 @@ export const initClient = () => {
   };
 };
 
-const checkSignedIn = () => {
-  const isSignedIn = window.gapi.auth2.getAuthInstance().isSignedIn.get();
-  if (isSignedIn) {
-    window.gapi.auth2
-      .getAuthInstance()
-      .attachClickHandler("signin-button", {}, onSuccess, onFailure);
-  }
+export const checkSignedIn = () => {
+  return window.gapi.auth2.getAuthInstance().isSignedIn.get();
+  // if (isSignedIn) {
+  //   window.gapi.auth2
+  //     .getAuthInstance()
+  //     .attachClickHandler("signin-button", {}, onSuccess, onFailure);
+  // }
 };
 
 const onSuccess = (googleUser) => {
