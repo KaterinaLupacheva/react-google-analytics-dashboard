@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
-import format from "date-fns/format";
+import { format, addDays } from "date-fns";
 import { ChartWrapper } from "./styles";
+import CustomDatePicker from "./datepicker";
 
 const DayUsersReport = () => {
-  const [reportData, setReportData] = useState({
+  const INITIAL_STATE = {
     labels: [],
     values: [],
-  });
+  };
+  const [reportData, setReportData] = useState(INITIAL_STATE);
+  const [startDate, setStartDate] = useState(addDays(new Date(), -10));
+  const [endDate, setEndDate] = useState(new Date());
 
   const queryReports = () => {
     const VIEW_ID = "207194869";
@@ -22,8 +26,8 @@ const DayUsersReport = () => {
               viewId: VIEW_ID,
               dateRanges: [
                 {
-                  startDate: "7daysAgo",
-                  endDate: "today",
+                  startDate: format(new Date(startDate), "yyyy-MM-dd"),
+                  endDate: format(new Date(endDate), "yyyy-MM-dd"),
                 },
               ],
               metrics: [
@@ -61,14 +65,18 @@ const DayUsersReport = () => {
       );
       values.push(row.metrics[0].values[0]);
     });
-    setReportData({ labels, values });
+    setReportData({
+      ...reportData,
+      labels,
+      values,
+    });
   };
 
   const data = {
     labels: reportData.labels,
     datasets: [
       {
-        label: "My First dataset",
+        label: "Users per day",
         fill: false,
         lineTension: 0.1,
         backgroundColor: "rgba(75,192,192,0.4)",
@@ -104,7 +112,7 @@ const DayUsersReport = () => {
         {
           ticks: {
             autoSkip: true,
-            maxTicksLimit: 10,
+            maxTicksLimit: 7,
           },
         },
       ],
@@ -117,11 +125,21 @@ const DayUsersReport = () => {
 
   useEffect(() => {
     queryReports();
-  }, []);
+  }, [startDate, endDate]);
 
   return (
     <>
       <h3>Users per day</h3>
+      <CustomDatePicker
+        placeholder={"Start date"}
+        date={startDate}
+        handleDateChange={(date) => setStartDate(date)}
+      />
+      <CustomDatePicker
+        placeholder={"End date"}
+        date={endDate}
+        handleDateChange={(date) => setEndDate(date)}
+      />
       {reportData && (
         <ChartWrapper>
           <Line data={data} options={options} width={100} height={250} />
