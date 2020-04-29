@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { format, addDays } from "date-fns";
+import { addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
 import { StyledTable } from "./styles";
 import { queryReport } from "./queryReport";
