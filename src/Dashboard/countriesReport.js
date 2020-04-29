@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Pie } from "react-chartjs-2";
-import { ChartWrapper } from "./styles";
+import { PieChartWrapper } from "./styles";
 import { format, addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
 
@@ -77,7 +77,13 @@ const CountriesReport = () => {
     datasets: [
       {
         data: reportData.values,
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#af78cf",
+          "#8bcf78",
+        ],
         hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       },
     ],
@@ -102,9 +108,9 @@ const CountriesReport = () => {
         handleDateChange={(date) => setEndDate(date)}
       />
       {reportData && (
-        <ChartWrapper>
+        <PieChartWrapper>
           <Pie data={data} />
-        </ChartWrapper>
+        </PieChartWrapper>
       )}
     </>
   );
