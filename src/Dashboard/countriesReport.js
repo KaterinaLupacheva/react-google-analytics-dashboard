@@ -16,7 +16,7 @@ const CountriesReport = () => {
 
   const queryReports = () => {
     const VIEW_ID = "207194869";
-    return window.gapi.client
+    window.gapi.client
       .request({
         path: "/v4/reports:batchGet",
         root: "https://analyticsreporting.googleapis.com/",
