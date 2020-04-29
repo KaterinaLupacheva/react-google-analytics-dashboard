@@ -30,3 +30,14 @@ export const StyledTable = styled.table`
     text-align: left;
   }
 `;
+
+export const colors = [
+  "#fcba03",
+  "#fa8c5c",
+  "#9fc934",
+  "#60d17e",
+  "#45afed",
+  "#7c5cdb",
+  "#ce5cdb",
+  "#db5c97",
+];

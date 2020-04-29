@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { addDays } from "date-fns";
 import { Pie } from "react-chartjs-2";
 import { PieChartWrapper, colors } from "./styles";
-import { addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
 import { queryReport } from "./queryReport";
 
-const CountriesReport = () => {
+const BrowsersReport = () => {
   const INITIAL_STATE = {
     labels: [],
     values: [],
@@ -14,20 +14,19 @@ const CountriesReport = () => {
   const [reportData, setReportData] = useState(INITIAL_STATE);
   const [startDate, setStartDate] = useState(addDays(new Date(), -10));
   const [endDate, setEndDate] = useState(new Date());
-  const [totalCoutries, setTotalCountries] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
 
   const displayResults = (response) => {
     const queryResult = response.result.reports[0].data.rows;
-    setTotalCountries(queryResult.length);
+    const total = response.result.reports[0].data.totals[0].values[0];
+    setTotalUsers(total);
     let labels = [];
     let values = [];
     let bgColors = [];
-    queryResult.forEach((row, idx) => {
-      if (idx < 5) {
-        labels.push(row.dimensions[0]);
-        values.push(row.metrics[0].values[0]);
-        bgColors.push(colors[idx + 1]);
-      }
+    queryResult.forEach((row, id) => {
+      labels.push(row.dimensions[0]);
+      values.push(row.metrics[0].values[0]);
+      bgColors.push(colors[id]);
     });
     setReportData({
       ...reportData,
@@ -52,11 +51,7 @@ const CountriesReport = () => {
       startDate,
       endDate,
       metrics: "ga:users",
-      dimensions: ["ga:country"],
-      orderBy: {
-        fieldName: "ga:users",
-        order: "DESCENDING",
-      },
+      dimensions: ["ga:browser"],
     };
     queryReport(request)
       .then((resp) => displayResults(resp))
@@ -65,8 +60,8 @@ const CountriesReport = () => {
 
   return (
     <>
-      <h2>Top 5 Countries by Users</h2>
-      <h4>{`Total countries - ${totalCoutries}`}</h4>
+      <h2>Browsers by Users</h2>
+      <h5>{`Total Users - ${totalUsers}`}</h5>
       <CustomDatePicker
         placeholder={"Start date"}
         date={startDate}
@@ -86,4 +81,4 @@ const CountriesReport = () => {
   );
 };
 
-export default CountriesReport;
+export default BrowsersReport;

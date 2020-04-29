@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { ChartWrapper } from "./styles";
+import { ChartWrapper, colors } from "./styles";
 import { addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
 import { queryReport } from "./queryReport";
@@ -54,13 +54,12 @@ const SourceReport = () => {
 
   const createDataForChart = (datesArray, sumedVisits, groupedBySource) => {
     const uniqueDates = [...new Set(datesArray)];
-    const colors = ["green", "yellow", "blue", "grey", "purple", "red"];
     let datasetsArray = [];
     let i = 0;
     sumedVisits.forEach((item, id) => {
       if (id < 5) {
         const label = item.source;
-        const backgroundColor = colors[i];
+        const backgroundColor = colors[i + 3];
         i++;
         let data = [];
         uniqueDates.forEach((date) => {
