@@ -9,7 +9,7 @@ import { formatDate } from "./utils";
 const SourceReport = () => {
   const INITIAL_STATE = {
     labels: [],
-    values: [],
+    datasets: [],
   };
   const [reportData, setReportData] = useState(INITIAL_STATE);
   const [startDate, setStartDate] = useState(addDays(new Date(), -10));
@@ -18,46 +18,102 @@ const SourceReport = () => {
 
   const displayResults = (response) => {
     const queryResult = response.result.reports[0].data.rows;
-    // console.log(response.result.reports[0].data)
     let transformedData = [];
+    let datesArray = [];
     queryResult.forEach((row) => {
       transformedData.push({
         date: formatDate(row.dimensions[1]),
         source: row.dimensions[0],
         visits: row.metrics[0].values[0],
       });
+      datesArray.push(formatDate(row.dimensions[1]));
     });
-    console.log(transformedData);
+    const groupedBySource = transformedData.reduce((r, a) => {
+      r[a.source] = r[a.source] || [];
+      r[a.source].push(a);
+      return r;
+    }, Object.create(null));
+    setTotalSources(Object.keys(groupedBySource).length);
 
-    // setTotalCountries(queryResult.length);
-    // let labels = [];
-    // let values = [];
-    // queryResult.forEach((row, idx) => {
-    //   if (idx < 5) {
-    //     labels.push(row.dimensions[0]);
-    //     values.push(row.metrics[0].values[0]);
-    //   }
-    // });
-    // setReportData({
-    //   ...reportData,
-    //   labels,
-    //   values,
-    // });
+    let sumedVisits = [];
+    for (let [key, value] of Object.entries(groupedBySource)) {
+      const sumOfVisits = value.reduce((a, b) => {
+        return a + parseInt(b.visits);
+      }, 0);
+      sumedVisits.push({
+        source: key,
+        visits: sumOfVisits,
+      });
+    }
+    sumedVisits.sort((a, b) => b.visits - a.visits);
+
+    const uniqueDates = [...new Set(datesArray)];
+    const colors = ["green", "yellow", "blue", "grey", "purple", "red"];
+    let datasetsArray = [];
+    let i = 0;
+    sumedVisits.forEach((item, id) => {
+      if (id < 5) {
+        const label = item.source;
+        const backgroundColor = colors[i];
+        i++;
+        let data = [];
+        uniqueDates.forEach((date) => {
+          const row = groupedBySource[item.source].find(
+            (item) => item.date === date
+          );
+          if (row) {
+            data.push(parseInt(row.visits));
+          } else {
+            data.push(0);
+          }
+        });
+        datasetsArray.push({
+          label,
+          backgroundColor,
+          data,
+        });
+      }
+    });
+    setReportData({
+      ...reportData,
+      labels: uniqueDates,
+      datasets: datasetsArray,
+    });
+  };
+
+  const options = {
+    tooltips: {
+      displayColors: true,
+      callbacks: {
+        mode: "x",
+      },
+    },
+    scales: {
+      xAxes: [
+        {
+          stacked: true,
+          gridLines: {
+            display: false,
+          },
+        },
+      ],
+      yAxes: [
+        {
+          stacked: true,
+          ticks: {
+            beginAtZero: true,
+          },
+          type: "linear",
+        },
+      ],
+    },
+    maintainAspectRatio: false,
+    legend: { position: "bottom" },
   };
 
   const data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-      {
-        label: "My First dataset",
-        backgroundColor: "rgba(255,99,132,0.2)",
-        borderColor: "rgba(255,99,132,1)",
-        borderWidth: 1,
-        hoverBackgroundColor: "rgba(255,99,132,0.4)",
-        hoverBorderColor: "rgba(255,99,132,1)",
-        data: [65, 59, 80, 81, 56, 55, 40],
-      },
-    ],
+    labels: reportData.labels,
+    datasets: reportData.datasets,
   };
 
   useEffect(() => {
@@ -75,7 +131,7 @@ const SourceReport = () => {
   return (
     <>
       <h2>Top 5 Sources of Visits</h2>
-      <h4>{`Total countries - ${totalSources}`}</h4>
+      <h4>{`Total sources - ${totalSources}`}</h4>
       <CustomDatePicker
         placeholder={"Start date"}
         date={startDate}
@@ -88,14 +144,7 @@ const SourceReport = () => {
       />
       {reportData && (
         <ChartWrapper>
-          <Bar
-            data={data}
-            width={100}
-            height={250}
-            options={{
-              maintainAspectRatio: false,
-            }}
-          />
+          <Bar data={data} width={100} height={250} options={options} />
         </ChartWrapper>
       )}
     </>
