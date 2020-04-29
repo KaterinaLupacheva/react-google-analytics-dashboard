@@ -3,6 +3,7 @@ import { Line } from "react-chartjs-2";
 import { format, addDays } from "date-fns";
 import { ChartWrapper } from "./styles";
 import CustomDatePicker from "./datepicker";
+import { queryReport } from "./queryReport";
 
 const DayVisitsReport = (props) => {
   const INITIAL_STATE = {
@@ -13,40 +14,6 @@ const DayVisitsReport = (props) => {
   const [startDate, setStartDate] = useState(addDays(new Date(), -10));
   const [endDate, setEndDate] = useState(new Date());
   const [average, setAverage] = useState(0);
-
-  const queryReports = () => {
-    const VIEW_ID = "207194869";
-    return window.gapi.client
-      .request({
-        path: "/v4/reports:batchGet",
-        root: "https://analyticsreporting.googleapis.com/",
-        method: "POST",
-        body: {
-          reportRequests: [
-            {
-              viewId: VIEW_ID,
-              dateRanges: [
-                {
-                  startDate: format(new Date(startDate), "yyyy-MM-dd"),
-                  endDate: format(new Date(endDate), "yyyy-MM-dd"),
-                },
-              ],
-              metrics: [
-                {
-                  expression: props.metric,
-                },
-              ],
-              dimensions: [
-                {
-                  name: "ga:date",
-                },
-              ],
-            },
-          ],
-        },
-      })
-      .then(displayResults, console.error.bind(console));
-  };
 
   const displayResults = (response) => {
     const queryResult = response.result.reports[0].data.rows;
@@ -127,7 +94,15 @@ const DayVisitsReport = (props) => {
   };
 
   useEffect(() => {
-    queryReports();
+    const request = {
+      startDate,
+      endDate,
+      metrics: props.metric,
+      dimensions: "ga:date",
+    };
+    queryReport(request)
+      .then((resp) => displayResults(resp))
+      .catch((error) => console.error(error));
   }, [startDate, endDate]);
 
   return (
