@@ -1,25 +1,22 @@
-export const initClient = () => {
-  window.gapi.load("auth2", () => {
-    const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-    window.gapi.auth2
-      .init({
-        client_id: CLIENT_ID,
-        scope: "https://www.googleapis.com/auth/analytics.readonly",
-      })
-      .then(onInit, onError);
+const initAuth = () => {
+  const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+  return window.gapi.auth2.init({
+    client_id: CLIENT_ID,
+    scope: "https://www.googleapis.com/auth/analytics.readonly",
   });
-
-  const onInit = () => {
-    console.log("Success");
-  };
-
-  const onError = () => {
-    console.error("Error");
-  };
 };
 
 export const checkSignedIn = () => {
-  return window.gapi.auth2.getAuthInstance().isSignedIn.get();
+  return new Promise((resolve, reject) => {
+    initAuth()
+      .then(() => {
+        const auth = window.gapi.auth2.getAuthInstance();
+        resolve(auth.isSignedIn.get());
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 };
 
 const onSuccess = (googleUser) => {
@@ -43,5 +40,5 @@ export const renderButton = () => {
 };
 
 export const signOut = () => {
-  return window.gapi.auth2.getAuthInstance().signOut();
+  window.gapi.auth2.getAuthInstance().signOut();
 };
