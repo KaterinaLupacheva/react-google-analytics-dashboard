@@ -4,6 +4,7 @@ import CountriesReport from "./countriesReport";
 import PageviewsReport from "./pageviewReport";
 import SourceReport from "./sourceReport";
 import BrowsersReport from "./browsersReport";
+import DevicesReport from "./devicesReport";
 
 const DashBoard = () => {
   return (
@@ -14,6 +15,7 @@ const DashBoard = () => {
       <PageviewsReport />
       <SourceReport />
       <BrowsersReport />
+      <DevicesReport />
     </>
   );
 };
