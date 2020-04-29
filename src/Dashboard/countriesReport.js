@@ -55,7 +55,7 @@ const CountriesReport = () => {
       startDate,
       endDate,
       metrics: "ga:users",
-      dimensions: "ga:country",
+      dimensions: ["ga:country"],
       orderBy: {
         fieldName: "ga:users",
         order: "DESCENDING",

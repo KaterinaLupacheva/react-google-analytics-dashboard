@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
-import { format, addDays } from "date-fns";
+import { addDays } from "date-fns";
 import { ChartWrapper } from "./styles";
 import CustomDatePicker from "./datepicker";
 import { queryReport } from "./queryReport";
+import { formatDate } from "./utils";
 
 const DayVisitsReport = (props) => {
   const INITIAL_STATE = {
@@ -22,17 +23,7 @@ const DayVisitsReport = (props) => {
     let labels = [];
     let values = [];
     queryResult.forEach((row) => {
-      const date = row.dimensions[0];
-      labels.push(
-        format(
-          new Date(
-            date.substring(0, 4),
-            date.substring(4, 6) - 1,
-            date.substring(6, 8)
-          ),
-          "MMM. d, yyyy"
-        )
-      );
+      labels.push(formatDate(row.dimensions[0]));
       values.push(row.metrics[0].values[0]);
     });
     setReportData({
@@ -98,7 +89,7 @@ const DayVisitsReport = (props) => {
       startDate,
       endDate,
       metrics: props.metric,
-      dimensions: "ga:date",
+      dimensions: ["ga:date"],
     };
     queryReport(request)
       .then((resp) => displayResults(resp))

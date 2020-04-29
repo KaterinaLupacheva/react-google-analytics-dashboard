@@ -2,6 +2,7 @@ import React from "react";
 import DayVisitsReport from "./dayVisitsReport";
 import CountriesReport from "./countriesReport";
 import PageviewsReport from "./pageviewReport";
+import SourceReport from './sourceReport';
 
 const DashBoard = () => {
   return (
@@ -10,6 +11,7 @@ const DashBoard = () => {
       <DayVisitsReport metric={"ga:sessions"} title={"Sessions"} />
       <CountriesReport />
       <PageviewsReport />
+      <SourceReport />
     </>
   );
 };

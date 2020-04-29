@@ -35,7 +35,7 @@ const PageviewsReport = () => {
       startDate,
       endDate,
       metrics: "ga:pageviews",
-      dimensions: "ga:pagePath",
+      dimensions: ["ga:pagePath"],
       orderBy: {
         fieldName: "ga:pageViews",
         order: "DESCENDING",
