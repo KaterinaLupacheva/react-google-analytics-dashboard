@@ -16,11 +16,10 @@ const SourceReport = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [totalSources, setTotalSources] = useState(0);
 
-  const displayResults = (response) => {
-    const queryResult = response.result.reports[0].data.rows;
+  const transformAPIData = (data) => {
     let transformedData = [];
     let datesArray = [];
-    queryResult.forEach((row) => {
+    data.forEach((row) => {
       transformedData.push({
         date: formatDate(row.dimensions[1]),
         source: row.dimensions[0],
@@ -28,15 +27,20 @@ const SourceReport = () => {
       });
       datesArray.push(formatDate(row.dimensions[1]));
     });
-    const groupedBySource = transformedData.reduce((r, a) => {
+    return [transformedData, datesArray];
+  };
+
+  const groupDataBySource = (data) => {
+    return data.reduce((r, a) => {
       r[a.source] = r[a.source] || [];
       r[a.source].push(a);
       return r;
     }, Object.create(null));
-    setTotalSources(Object.keys(groupedBySource).length);
+  };
 
+  const sortSourcesByTotalVisits = (data) => {
     let sumedVisits = [];
-    for (let [key, value] of Object.entries(groupedBySource)) {
+    for (let [key, value] of Object.entries(data)) {
       const sumOfVisits = value.reduce((a, b) => {
         return a + parseInt(b.visits);
       }, 0);
@@ -45,8 +49,10 @@ const SourceReport = () => {
         visits: sumOfVisits,
       });
     }
-    sumedVisits.sort((a, b) => b.visits - a.visits);
+    return sumedVisits.sort((a, b) => b.visits - a.visits);
+  };
 
+  const createDataForChart = (datesArray, sumedVisits, groupedBySource) => {
     const uniqueDates = [...new Set(datesArray)];
     const colors = ["green", "yellow", "blue", "grey", "purple", "red"];
     let datasetsArray = [];
@@ -74,10 +80,31 @@ const SourceReport = () => {
         });
       }
     });
+    return { labels: uniqueDates, data: datasetsArray };
+  };
+
+  const displayResults = (response) => {
+    const queryResult = response.result.reports[0].data.rows;
+
+    const data = transformAPIData(queryResult);
+    let transformedData = data[0];
+    let datesArray = data[1];
+
+    const groupedBySource = groupDataBySource(transformedData);
+    setTotalSources(Object.keys(groupedBySource).length);
+
+    const sumedVisits = sortSourcesByTotalVisits(groupedBySource);
+
+    const dataForChart = createDataForChart(
+      datesArray,
+      sumedVisits,
+      groupedBySource
+    );
+
     setReportData({
       ...reportData,
-      labels: uniqueDates,
-      datasets: datasetsArray,
+      labels: dataForChart.labels,
+      datasets: dataForChart.data,
     });
   };
 

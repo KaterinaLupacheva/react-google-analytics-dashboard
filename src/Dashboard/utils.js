@@ -10,7 +10,3 @@ export const formatDate = (string) => {
     "MMM. d, yyyy"
   );
 };
-
-export const getUniqueValues = (array) => {
-  return [...new Set(array)];
-};
