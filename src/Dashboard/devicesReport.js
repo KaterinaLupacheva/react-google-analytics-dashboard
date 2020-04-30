@@ -49,6 +49,11 @@ const DevicesReport = () => {
   const options = {
     legend: { position: "bottom" },
     maintainAspectRatio: false,
+    plugins: {
+      datalabels: {
+        display: false,
+      },
+    },
   };
 
   useEffect(() => {

@@ -81,6 +81,13 @@ const DayVisitsReport = (props) => {
     legend: {
       display: false,
     },
+    plugins: {
+      datalabels: {
+        font: {
+          size: 0,
+        },
+      },
+    },
   };
 
   useEffect(() => {

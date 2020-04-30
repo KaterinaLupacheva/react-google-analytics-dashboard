@@ -142,6 +142,13 @@ const SourceReport = () => {
     },
     maintainAspectRatio: false,
     legend: { position: "bottom" },
+    plugins: {
+      datalabels: {
+        font: {
+          size: 0,
+        },
+      },
+    },
   };
 
   const data = {
