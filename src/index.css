@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-body > #root > div {
+html, body, #root, #root>div {
   height: 100%;
   background-color: #e6e3dc;
 }

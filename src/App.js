@@ -3,6 +3,7 @@ import "./App.css";
 import { renderButton, checkSignedIn } from "./GoogleAuth/authUtils";
 import Dashboard from "./Dashboard/dashboard";
 import styled from "styled-components";
+import Footer from "./Components/footer";
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -37,6 +38,7 @@ function App() {
           <ButtonContainer>
             <div id="signin-button"></div>
           </ButtonContainer>
+          <Footer />
         </>
       ) : (
         <Dashboard />
