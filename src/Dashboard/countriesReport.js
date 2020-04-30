@@ -7,7 +7,7 @@ import { queryReport } from "./queryReport";
 import { ChartTitle, ReportWrapper, Subtitle, DatepickerRow } from "./styles";
 import "chartjs-plugin-datalabels";
 
-const CountriesReport = () => {
+const CountriesReport = (props) => {
   const INITIAL_STATE = {
     labels: [],
     values: [],
@@ -75,6 +75,7 @@ const CountriesReport = () => {
 
   useEffect(() => {
     const request = {
+      viewID: props.viewID,
       startDate,
       endDate,
       metrics: "ga:users",

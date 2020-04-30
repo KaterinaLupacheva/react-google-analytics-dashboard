@@ -92,6 +92,7 @@ const DayVisitsReport = (props) => {
 
   useEffect(() => {
     const request = {
+      viewID: props.viewID,
       startDate,
       endDate,
       metrics: props.metric,

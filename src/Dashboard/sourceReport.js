@@ -13,7 +13,7 @@ import {
   colors,
 } from "./styles";
 
-const SourceReport = () => {
+const SourceReport = (props) => {
   const INITIAL_STATE = {
     labels: [],
     datasets: [],
@@ -158,6 +158,7 @@ const SourceReport = () => {
 
   useEffect(() => {
     const request = {
+      viewID: props.viewID,
       startDate,
       endDate,
       metrics: "ga:users",

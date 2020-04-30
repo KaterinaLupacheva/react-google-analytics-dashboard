@@ -1,8 +1,16 @@
 import { format } from "date-fns";
 
 export const queryReport = (props) => {
-  const { startDate, endDate, metrics, dimensions, orderBy, filter } = props;
-  
+  const {
+    viewID,
+    startDate,
+    endDate,
+    metrics,
+    dimensions,
+    orderBy,
+    filter,
+  } = props;
+
   const requestDimensions = (dimensions) => {
     let result = [];
     dimensions.forEach((item) => {
@@ -12,7 +20,6 @@ export const queryReport = (props) => {
     });
     return result;
   };
-  const VIEW_ID = "207194869";
   return window.gapi.client.request({
     path: "/v4/reports:batchGet",
     root: "https://analyticsreporting.googleapis.com/",
@@ -20,7 +27,7 @@ export const queryReport = (props) => {
     body: {
       reportRequests: [
         {
-          viewId: VIEW_ID,
+          viewId: viewID,
           filtersExpression: filter,
           dateRanges: [
             {

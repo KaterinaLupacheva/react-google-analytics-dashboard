@@ -10,7 +10,7 @@ import {
   StyledTable,
 } from "./styles";
 
-const PageviewsReport = () => {
+const PageviewsReport = (props) => {
   const [reportData, setReportData] = useState([]);
   const [startDate, setStartDate] = useState(addDays(new Date(), -10));
   const [endDate, setEndDate] = useState(new Date());
@@ -38,6 +38,7 @@ const PageviewsReport = () => {
 
   useEffect(() => {
     const request = {
+      viewID: props.viewID,
       startDate,
       endDate,
       metrics: "ga:pageviews",

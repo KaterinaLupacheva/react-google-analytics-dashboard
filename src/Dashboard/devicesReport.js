@@ -5,7 +5,7 @@ import CustomDatePicker from "./datepicker";
 import { queryReport } from "./queryReport";
 import { ChartTitle, Subtitle, PieChartWrapper, colors } from "./styles";
 
-const DevicesReport = () => {
+const DevicesReport = (props) => {
   const INITIAL_STATE = {
     labels: [],
     values: [],
@@ -58,6 +58,7 @@ const DevicesReport = () => {
 
   useEffect(() => {
     const request = {
+      viewID: props.viewID,
       startDate,
       endDate,
       metrics: "ga:users",

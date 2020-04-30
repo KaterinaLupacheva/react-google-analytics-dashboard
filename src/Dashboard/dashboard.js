@@ -17,14 +17,22 @@ const DashBoard = () => {
       <Header />
       {viewID ? (
         <>
-          <DayVisitsReport metric={"ga:users"} title={"Users"} />
-          <DayVisitsReport metric={"ga:sessions"} title={"Sessions"} />
-          <CountriesReport />
-          <PageviewsReport />
-          <SourceReport />
+          <DayVisitsReport
+            metric={"ga:users"}
+            title={"Users"}
+            viewID={viewID}
+          />
+          <DayVisitsReport
+            metric={"ga:sessions"}
+            title={"Sessions"}
+            viewID={viewID}
+          />
+          <CountriesReport viewID={viewID} />
+          <PageviewsReport viewID={viewID} />
+          <SourceReport viewID={viewID} />
           <LastRow>
-            <BrowsersReport />
-            <DevicesReport />
+            <BrowsersReport viewID={viewID} />
+            <DevicesReport viewID={viewID} />
           </LastRow>
         </>
       ) : (
