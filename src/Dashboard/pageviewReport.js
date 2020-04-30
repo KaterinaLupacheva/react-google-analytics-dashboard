@@ -3,6 +3,7 @@ import { addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
 import { StyledTable } from "./styles";
 import { queryReport } from "./queryReport";
+import { ChartTitle, ReportWrapper, Subtitle, DatepickerRow } from "./styles";
 
 const PageviewsReport = () => {
   const [reportData, setReportData] = useState([]);
@@ -52,19 +53,21 @@ const PageviewsReport = () => {
   }, [startDate, endDate]);
 
   return (
-    <>
-      <h2>Top 10 Pages by Views</h2>
-      <h4>{`Total pages - ${totalPages}`}</h4>
-      <CustomDatePicker
-        placeholder={"Start date"}
-        date={startDate}
-        handleDateChange={(date) => setStartDate(date)}
-      />
-      <CustomDatePicker
-        placeholder={"End date"}
-        date={endDate}
-        handleDateChange={(date) => setEndDate(date)}
-      />
+    <ReportWrapper>
+      <ChartTitle>Top 10 Pages by Views</ChartTitle>
+      <Subtitle>{`Total pages - ${totalPages}`}</Subtitle>
+      <DatepickerRow>
+        <CustomDatePicker
+          placeholder={"Start date"}
+          date={startDate}
+          handleDateChange={(date) => setStartDate(date)}
+        />
+        <CustomDatePicker
+          placeholder={"End date"}
+          date={endDate}
+          handleDateChange={(date) => setEndDate(date)}
+        />
+      </DatepickerRow>
       {reportData.length && (
         <StyledTable>
           <thead>
@@ -85,7 +88,7 @@ const PageviewsReport = () => {
           </tbody>
         </StyledTable>
       )}
-    </>
+    </ReportWrapper>
   );
 };
 
