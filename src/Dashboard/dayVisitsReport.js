@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import { addDays } from "date-fns";
-import { ChartWrapper } from "./styles";
+import {
+  ChartWrapper,
+  ReportWrapper,
+  ChartTitle,
+  Subtitle,
+  DatepickerRow,
+} from "./styles";
 import CustomDatePicker from "./datepicker";
 import { queryReport } from "./queryReport";
 import { formatDate } from "./utils";
@@ -39,18 +45,11 @@ const DayVisitsReport = (props) => {
       {
         label: `${props.title} per day`,
         fill: false,
-        lineTension: 0.1,
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-        borderCapStyle: "butt",
-        borderDash: [],
-        borderDashOffset: 0.0,
-        borderJoinStyle: "miter",
-        pointBorderColor: "rgba(75,192,192,1)",
-        pointBackgroundColor: "#fff",
+        lineTension: 0.3,
+        borderColor: "#35213d",
         pointBorderWidth: 1,
         pointHoverRadius: 5,
-        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBackgroundColor: "#375751",
         pointHoverBorderColor: "rgba(220,220,220,1)",
         pointHoverBorderWidth: 2,
         pointRadius: 1,
@@ -97,25 +96,27 @@ const DayVisitsReport = (props) => {
   }, [startDate, endDate]);
 
   return (
-    <>
-      <h2>{`${props.title} per day`}</h2>
-      <h5>{`Average - ${average} ${props.title}`}</h5>
-      <CustomDatePicker
-        placeholder={"Start date"}
-        date={startDate}
-        handleDateChange={(date) => setStartDate(date)}
-      />
-      <CustomDatePicker
-        placeholder={"End date"}
-        date={endDate}
-        handleDateChange={(date) => setEndDate(date)}
-      />
+    <ReportWrapper>
+      <ChartTitle>{`${props.title} per day`}</ChartTitle>
+      <Subtitle>{`Average - ${average} ${props.title}`}</Subtitle>
+      <DatepickerRow>
+        <CustomDatePicker
+          placeholder={"Start date"}
+          date={startDate}
+          handleDateChange={(date) => setStartDate(date)}
+        />
+        <CustomDatePicker
+          placeholder={"End date"}
+          date={endDate}
+          handleDateChange={(date) => setEndDate(date)}
+        />
+      </DatepickerRow>
       {reportData && (
         <ChartWrapper>
           <Line data={data} options={options} width={100} height={250} />
         </ChartWrapper>
       )}
-    </>
+    </ReportWrapper>
   );
 };
 

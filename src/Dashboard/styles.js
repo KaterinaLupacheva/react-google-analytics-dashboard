@@ -41,3 +41,44 @@ export const colors = [
   "#ce5cdb",
   "#db5c97",
 ];
+
+export const ChartTitle = styled.h2`
+  color: #4b2f57;
+  font-size: 2rem;
+`;
+
+export const Subtitle = styled.h3`
+  color: #35213d;
+  padding-bottom: 20px;
+`;
+
+export const ReportWrapper = styled.div`
+  padding: 40px 0;
+  border-bottom: 1px solid #f0eee9;
+`;
+
+export const DatepickerRow = styled.div`
+  width: 60vw;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  padding-bottom: 20px;
+`;
+
+export const DatepickerWrapper = styled.div`
+  color: #35213d;
+  font-weight: 500;
+  .picker {
+    width: fit-content;
+    border-color: #a2c1f2;
+    border-radius: 10px;
+    background-color: #d3dded;
+    text-align: center;
+    line-height: 20px;
+    font-size: 1rem;
+  }
+`;
+
+export const DatepickerLabel = styled.label`
+  padding-right: 5px;
+`;
