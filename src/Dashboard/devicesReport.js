@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { addDays } from "date-fns";
 import { Doughnut } from "react-chartjs-2";
-import { PieChartWrapper, colors } from "./styles";
 import CustomDatePicker from "./datepicker";
 import { queryReport } from "./queryReport";
+import { ChartTitle, Subtitle, PieChartWrapper, colors } from "./styles";
 
 const DevicesReport = () => {
   const INITIAL_STATE = {
@@ -46,6 +46,11 @@ const DevicesReport = () => {
     ],
   };
 
+  const options = {
+    legend: { position: "bottom" },
+    maintainAspectRatio: false,
+  };
+
   useEffect(() => {
     const request = {
       startDate,
@@ -63,9 +68,9 @@ const DevicesReport = () => {
   }, [startDate, endDate]);
 
   return (
-    <>
-      <h2>Devices by Users</h2>
-      <h5>{`Total Users - ${totalUsers}`}</h5>
+    <div>
+      <ChartTitle>Devices by Users</ChartTitle>
+      <Subtitle>{`Total Users - ${totalUsers}`}</Subtitle>
       <CustomDatePicker
         placeholder={"Start date"}
         date={startDate}
@@ -78,10 +83,10 @@ const DevicesReport = () => {
       />
       {reportData && (
         <PieChartWrapper>
-          <Doughnut data={data} />
+          <Doughnut data={data} options={options} width={300} height={300} />
         </PieChartWrapper>
       )}
-    </>
+    </div>
   );
 };
 

@@ -6,6 +6,7 @@ import SourceReport from "./sourceReport";
 import BrowsersReport from "./browsersReport";
 import DevicesReport from "./devicesReport";
 import Header from "../Components/header";
+import { LastRow } from "./styles";
 
 const DashBoard = () => {
   return (
@@ -16,8 +17,10 @@ const DashBoard = () => {
       <CountriesReport />
       <PageviewsReport />
       <SourceReport />
-      <BrowsersReport />
-      <DevicesReport />
+      <LastRow>
+        <BrowsersReport />
+        <DevicesReport />
+      </LastRow>
     </>
   );
 };

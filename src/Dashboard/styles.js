@@ -6,7 +6,7 @@ export const ChartWrapper = styled.div`
 `;
 
 export const PieChartWrapper = styled.div`
-  width: 50vw;
+  width: 48vw;
   margin: 0 auto;
 `;
 
@@ -57,12 +57,17 @@ export const ReportWrapper = styled.div`
   border-bottom: 1px solid #f0eee9;
 `;
 
+export const LastRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 0;
+`;
+
 export const DatepickerRow = styled.div`
   width: 60vw;
   display: flex;
   justify-content: space-evenly;
   margin: 0 auto;
-  padding-bottom: 20px;
 `;
 
 export const DatepickerWrapper = styled.div`
@@ -76,6 +81,7 @@ export const DatepickerWrapper = styled.div`
     text-align: center;
     line-height: 20px;
     font-size: 1rem;
+    margin-bottom: 20px;
   }
 `;
 
