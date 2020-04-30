@@ -8,9 +8,11 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   z-index: 2;
+  width: 100%;
 
   h1 {
     padding-left: 20px;
