@@ -4,6 +4,7 @@ import { PieChartWrapper, colors } from "./styles";
 import { addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
 import { queryReport } from "./queryReport";
+import { ChartTitle, ReportWrapper, Subtitle, DatepickerRow } from "./styles";
 
 const CountriesReport = () => {
   const INITIAL_STATE = {
@@ -68,25 +69,27 @@ const CountriesReport = () => {
   }, [startDate, endDate]);
 
   return (
-    <>
-      <h2>Top 5 Countries by Users</h2>
-      <h4>{`Total countries - ${totalCoutries}`}</h4>
-      <CustomDatePicker
-        placeholder={"Start date"}
-        date={startDate}
-        handleDateChange={(date) => setStartDate(date)}
-      />
-      <CustomDatePicker
-        placeholder={"End date"}
-        date={endDate}
-        handleDateChange={(date) => setEndDate(date)}
-      />
+    <ReportWrapper>
+      <ChartTitle>Top 5 Countries by Users</ChartTitle>
+      <Subtitle>{`Total countries - ${totalCoutries}`}</Subtitle>
+      <DatepickerRow>
+        <CustomDatePicker
+          placeholder={"Start date"}
+          date={startDate}
+          handleDateChange={(date) => setStartDate(date)}
+        />
+        <CustomDatePicker
+          placeholder={"End date"}
+          date={endDate}
+          handleDateChange={(date) => setEndDate(date)}
+        />
+      </DatepickerRow>
       {reportData && (
         <PieChartWrapper>
           <Pie data={data} />
         </PieChartWrapper>
       )}
-    </>
+    </ReportWrapper>
   );
 };
 
