@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
-import { StyledTable } from "./styles";
 import { queryReport } from "./queryReport";
-import { ChartTitle, ReportWrapper, Subtitle, DatepickerRow } from "./styles";
+import {
+  ChartTitle,
+  ReportWrapper,
+  Subtitle,
+  DatepickerRow,
+  StyledTable,
+} from "./styles";
 
 const PageviewsReport = () => {
   const [reportData, setReportData] = useState([]);

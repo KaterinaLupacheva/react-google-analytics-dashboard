@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { ChartWrapper, colors } from "./styles";
 import { addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
 import { queryReport } from "./queryReport";
 import { formatDate } from "./utils";
+import {
+  ChartTitle,
+  ReportWrapper,
+  Subtitle,
+  DatepickerRow,
+  ChartWrapper,
+  colors,
+} from "./styles";
 
 const SourceReport = () => {
   const INITIAL_STATE = {
@@ -159,25 +166,27 @@ const SourceReport = () => {
   }, [startDate, endDate]);
 
   return (
-    <>
-      <h2>Top 5 Sources of Visits</h2>
-      <h4>{`Total sources - ${totalSources}`}</h4>
-      <CustomDatePicker
-        placeholder={"Start date"}
-        date={startDate}
-        handleDateChange={(date) => setStartDate(date)}
-      />
-      <CustomDatePicker
-        placeholder={"End date"}
-        date={endDate}
-        handleDateChange={(date) => setEndDate(date)}
-      />
+    <ReportWrapper>
+      <ChartTitle>Top 5 Sources of Visits</ChartTitle>
+      <Subtitle>{`Total sources - ${totalSources}`}</Subtitle>
+      <DatepickerRow>
+        <CustomDatePicker
+          placeholder={"Start date"}
+          date={startDate}
+          handleDateChange={(date) => setStartDate(date)}
+        />
+        <CustomDatePicker
+          placeholder={"End date"}
+          date={endDate}
+          handleDateChange={(date) => setEndDate(date)}
+        />
+      </DatepickerRow>
       {reportData && (
         <ChartWrapper>
           <Bar data={data} width={100} height={250} options={options} />
         </ChartWrapper>
       )}
-    </>
+    </ReportWrapper>
   );
 };
 
