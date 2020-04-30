@@ -149,9 +149,13 @@ const SourceReport = () => {
       metrics: "ga:users",
       dimensions: ["ga:source", "ga:date"],
     };
-    queryReport(request)
-      .then((resp) => displayResults(resp))
-      .catch((error) => console.error(error));
+    setTimeout(
+      () =>
+        queryReport(request)
+          .then((resp) => displayResults(resp))
+          .catch((error) => console.error(error)),
+      1100
+    );
   }, [startDate, endDate]);
 
   return (

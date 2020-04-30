@@ -28,7 +28,7 @@ function App() {
 
   useEffect(() => {
     window.gapi.load("auth2", init);
-  }, []);
+  });
 
   return (
     <div className="App">

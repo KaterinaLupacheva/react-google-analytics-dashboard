@@ -42,9 +42,13 @@ const PageviewsReport = () => {
       },
       filter: "ga:pagePath!@localhost/",
     };
-    queryReport(request)
-      .then((resp) => displayResults(resp))
-      .catch((error) => console.error(error));
+    setTimeout(
+      () =>
+        queryReport(request)
+          .then((resp) => displayResults(resp))
+          .catch((error) => console.error(error)),
+      1000
+    );
   }, [startDate, endDate]);
 
   return (

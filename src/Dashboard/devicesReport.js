@@ -53,9 +53,13 @@ const DevicesReport = () => {
       metrics: "ga:users",
       dimensions: ["ga:deviceCategory"],
     };
-    queryReport(request)
-      .then((resp) => displayResults(resp))
-      .catch((error) => console.error(error));
+    setTimeout(
+      () =>
+        queryReport(request)
+          .then((resp) => displayResults(resp))
+          .catch((error) => console.error(error)),
+      1500
+    );
   }, [startDate, endDate]);
 
   return (
