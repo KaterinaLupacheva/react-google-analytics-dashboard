@@ -5,6 +5,7 @@ import { addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
 import { queryReport } from "./queryReport";
 import { ChartTitle, ReportWrapper, Subtitle, DatepickerRow } from "./styles";
+import "chartjs-plugin-datalabels";
 
 const CountriesReport = () => {
   const INITIAL_STATE = {
@@ -16,9 +17,11 @@ const CountriesReport = () => {
   const [startDate, setStartDate] = useState(addDays(new Date(), -10));
   const [endDate, setEndDate] = useState(new Date());
   const [totalCoutries, setTotalCountries] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
 
   const displayResults = (response) => {
     const queryResult = response.result.reports[0].data.rows;
+    setTotalUsers(response.result.reports[0].data.totals[0].values[0]);
     setTotalCountries(queryResult.length);
     let labels = [];
     let values = [];
@@ -46,6 +49,28 @@ const CountriesReport = () => {
         backgroundColor: reportData.colors,
       },
     ],
+  };
+
+  const options = {
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem, data) {
+          return data.labels[tooltipItem["index"]];
+        },
+      },
+    },
+    plugins: {
+      datalabels: {
+        color: "black",
+        font: {
+          size: 20,
+        },
+        formatter: function (value, context) {
+          const perc = parseInt((value / totalUsers) * 100);
+          return perc + "%";
+        },
+      },
+    },
   };
 
   useEffect(() => {
@@ -86,7 +111,7 @@ const CountriesReport = () => {
       </DatepickerRow>
       {reportData && (
         <PieChartWrapper>
-          <Pie data={data} />
+          <Pie data={data} options={options} />
         </PieChartWrapper>
       )}
     </ReportWrapper>
