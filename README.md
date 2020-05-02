@@ -2,6 +2,8 @@
 
 Custom Google Analytics Dashboard based on Google Analytics Reporting API v4 with OAuth2, charts and tables.
 
+![users](src/assets/images/users.JPG =100x100)
+
 ## Technologies used
 
 - [React.js](https://reactjs.org/)
