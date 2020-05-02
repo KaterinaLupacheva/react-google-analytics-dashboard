@@ -2,9 +2,14 @@
 
 Custom Google Analytics Dashboard based on Google Analytics Reporting API v4 with OAuth2, charts and tables.
 
-<img src="src/assets/images/users.JPG" alt="users visits" width="200" height="90"/>
-
-<img src="src/assets/images/sessions.JPG" alt="users visits" width="200" height="90"/>
+<p float="left">
+    <img src="src/assets/images/users.JPG" alt="users visits" width="200" height="90"/>
+    <img src="src/assets/images/sessions.JPG" alt="users visits" width="200" height="90"/>
+    <img src="src/assets/images/countries.JPG" alt="users visits" width="200" height="90"/>
+    <img src="src/assets/images/sources.JPG" alt="users visits" width="200" height="90"/>
+    <img src="src/assets/images/pages.JPG" alt="users visits" width="200" height="90"/>
+    <img src="src/assets/images/browsers-devices.JPG" alt="users visits" width="200" height="90"/>
+</p>
 
 ## Technologies used
 
