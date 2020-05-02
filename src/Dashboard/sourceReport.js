@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { addDays } from "date-fns";
+import { addDays, format } from "date-fns";
 import CustomDatePicker from "./datepicker";
 import { queryReport } from "./queryReport";
-import { formatDate } from "./utils";
+import { formatDate, transformToDate } from "./utils";
 import {
   ChartTitle,
   ReportWrapper,
@@ -32,7 +32,7 @@ const SourceReport = (props) => {
         source: row.dimensions[0],
         visits: row.metrics[0].values[0],
       });
-      datesArray.push(formatDate(row.dimensions[1]));
+      datesArray.push(transformToDate(row.dimensions[1]));
     });
     return [transformedData, datesArray];
   };
@@ -60,7 +60,13 @@ const SourceReport = (props) => {
   };
 
   const createDataForChart = (datesArray, sumedVisits, groupedBySource) => {
-    const uniqueDates = [...new Set(datesArray)];
+    datesArray.sort((a, b) => {
+      return new Date(a) - new Date(b);
+    });
+    const datesFormatted = datesArray.map((date) =>
+      format(new Date(date), "MMM. d, yyyy")
+    );
+    const uniqueDates = [...new Set(datesFormatted)];
     let datasetsArray = [];
     let i = 0;
     sumedVisits.forEach((item, id) => {
