@@ -14,6 +14,7 @@ Custom Google Analytics Dashboard based on Google Analytics Reporting API v4 wit
 ## Technologies used
 
 - [React.js](https://reactjs.org/)
+- [Google Analytics API](https://developers.google.com/analytics/devguides/reporting/core/v4)
 - [React Charts](https://github.com/jerairrest/react-chartjs-2)
 - [Styled Components](https://styled-components.com/)
 
