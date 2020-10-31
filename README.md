@@ -1,5 +1,7 @@
 # Custom Google Analytics Dashboard
 
+Source code for the blog post [How to develop a custom Google Analytics Dashboard using Google Analytics Reporting API v4 and React.js](https://ramonak.io/react-google-analytics-dashboard).
+
 Custom Google Analytics Dashboard based on Google Analytics Reporting API v4 with OAuth2, charts and tables.
 
 <p float="left">
