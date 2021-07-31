@@ -1,6 +1,6 @@
 # Custom Google Analytics Dashboard
 
-Source code for the blog post [How to develop a custom Google Analytics Dashboard using Google Analytics Reporting API v4 and React.js](https://ramonak.io/react-google-analytics-dashboard).
+Source code for the blog post [How to develop a custom Google Analytics Dashboard using Google Analytics Reporting API v4 and React.js](https://ramonak.io/posts/react-google-analytics-dashboard).
 
 Custom Google Analytics Dashboard based on Google Analytics Reporting API v4 with OAuth2, charts and tables.
 
@@ -27,8 +27,8 @@ Custom Google Analytics Dashboard based on Google Analytics Reporting API v4 wit
 3. Enable Google Analytics Reporting API.
 4. Configure Google OAuth consent screen.
 5. Add your CLIENT_ID into .env file:
-    REACT_APP_CLIENT_ID='YOUR_CLIENT_ID'
-6. Run ```npm install```
-7. Run ```npm start```
+   REACT_APP_CLIENT_ID='YOUR_CLIENT_ID'
+6. Run `npm install`
+7. Run `npm start`
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
