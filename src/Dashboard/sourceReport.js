@@ -128,15 +128,14 @@ const SourceReport = (props) => {
       },
     },
     scales: {
-      xAxes: [
+      xAxes: 
         {
           stacked: true,
           gridLines: {
             display: false,
           },
         },
-      ],
-      yAxes: [
+      yAxes: 
         {
           stacked: true,
           ticks: {
@@ -144,7 +143,6 @@ const SourceReport = (props) => {
           },
           type: "linear",
         },
-      ],
     },
     maintainAspectRatio: false,
     legend: { position: "bottom" },

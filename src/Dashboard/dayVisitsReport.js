@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import 'chart.js/auto';
 import { Line } from "react-chartjs-2";
 import { addDays } from "date-fns";
 import {
@@ -61,21 +62,16 @@ const DayVisitsReport = (props) => {
 
   const options = {
     scales: {
-      yAxes: [
-        {
-          ticks: {
+      yAxes:  {
             suggestedMin: 0,
           },
-        },
-      ],
-      xAxes: [
+      xAxes: 
         {
           ticks: {
             autoSkip: true,
             maxTicksLimit: 7,
           },
         },
-      ],
     },
     maintainAspectRatio: false,
     legend: {
