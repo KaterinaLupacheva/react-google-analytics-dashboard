@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { addDays, format } from "date-fns";
 import CustomDatePicker from "./datepicker";
-import { queryReport } from "./queryReport";
 import { formatDate, transformToDate } from "./utils";
 import {
   ChartTitle,
@@ -12,6 +11,7 @@ import {
   ChartWrapper,
   colors,
 } from "./styles";
+import { useQueryReport } from "../hooks/useQueryReport";
 
 const SourceReport = (props) => {
   const INITIAL_STATE = {
@@ -22,6 +22,8 @@ const SourceReport = (props) => {
   const [startDate, setStartDate] = useState(addDays(new Date(), -10));
   const [endDate, setEndDate] = useState(new Date());
   const [totalSources, setTotalSources] = useState(0);
+
+  const { fetchData } = useQueryReport();
 
   const transformAPIData = (data) => {
     let transformedData = [];
@@ -95,8 +97,8 @@ const SourceReport = (props) => {
     return { labels: uniqueDates, data: datasetsArray };
   };
 
-  const displayResults = (response) => {
-    const queryResult = response.result.reports[0].data.rows;
+  const displayResults = useCallback((response) => {
+    const queryResult = response.reports[0].data.rows;
 
     const data = transformAPIData(queryResult);
     let transformedData = data[0];
@@ -113,12 +115,12 @@ const SourceReport = (props) => {
       groupedBySource
     );
 
-    setReportData({
-      ...reportData,
+    setReportData((prev) => ({
+      ...prev,
       labels: dataForChart.labels,
       datasets: dataForChart.data,
-    });
-  };
+    }));
+  }, []);
 
   const options = {
     tooltips: {
@@ -128,21 +130,19 @@ const SourceReport = (props) => {
       },
     },
     scales: {
-      xAxes: 
-        {
-          stacked: true,
-          gridLines: {
-            display: false,
-          },
+      xAxes: {
+        stacked: true,
+        gridLines: {
+          display: false,
         },
-      yAxes: 
-        {
-          stacked: true,
-          ticks: {
-            beginAtZero: true,
-          },
-          type: "linear",
+      },
+      yAxes: {
+        stacked: true,
+        ticks: {
+          beginAtZero: true,
         },
+        type: "linear",
+      },
     },
     maintainAspectRatio: false,
     legend: { position: "bottom" },
@@ -170,12 +170,12 @@ const SourceReport = (props) => {
     };
     setTimeout(
       () =>
-        queryReport(request)
+        fetchData(request)
           .then((resp) => displayResults(resp))
           .catch((error) => console.error(error)),
       1100
     );
-  }, [startDate, endDate]);
+  }, [startDate, endDate, props.viewID, fetchData, displayResults]);
 
   return (
     <ReportWrapper>

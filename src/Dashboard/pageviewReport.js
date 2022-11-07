@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
-import { queryReport } from "./queryReport";
 import {
   ChartTitle,
   ReportWrapper,
@@ -9,6 +8,7 @@ import {
   DatepickerRow,
   StyledTable,
 } from "./styles";
+import { useQueryReport } from "../hooks/useQueryReport";
 
 const PageviewsReport = (props) => {
   const [reportData, setReportData] = useState([]);
@@ -16,10 +16,12 @@ const PageviewsReport = (props) => {
   const [endDate, setEndDate] = useState(new Date());
   const [totalPages, setTotalPages] = useState(0);
 
-  const displayResults = (response) => {
-    const queryResult = response.result.reports[0].data.rows;
+  const { fetchData } = useQueryReport();
+
+  const displayResults = useCallback((response) => {
+    const queryResult = response.reports[0].data.rows;
     setTotalPages(queryResult.length);
-    const total = response.result.reports[0].data.totals[0].values[0];
+    const total = response.reports[0].data.totals[0].values[0];
     let newReportData = [];
     queryResult.forEach((row, idx) => {
       if (idx < 10) {
@@ -34,7 +36,7 @@ const PageviewsReport = (props) => {
       }
     });
     setReportData(newReportData);
-  };
+  },[]);
 
   useEffect(() => {
     const request = {
@@ -51,12 +53,12 @@ const PageviewsReport = (props) => {
     };
     setTimeout(
       () =>
-        queryReport(request)
+        fetchData(request)
           .then((resp) => displayResults(resp))
           .catch((error) => console.error(error)),
       1000
     );
-  }, [startDate, endDate]);
+  }, [startDate, endDate, props.viewID, fetchData, displayResults]);
 
   return (
     <ReportWrapper>

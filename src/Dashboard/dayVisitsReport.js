@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import 'chart.js/auto';
 import { Line } from "react-chartjs-2";
 import { addDays } from "date-fns";
@@ -10,8 +10,8 @@ import {
   DatepickerRow,
 } from "./styles";
 import CustomDatePicker from "./datepicker";
-import { queryReport } from "./queryReport";
 import { formatDate } from "./utils";
+import { useQueryReport } from "../hooks/useQueryReport";
 
 const DayVisitsReport = (props) => {
   const INITIAL_STATE = {
@@ -23,22 +23,24 @@ const DayVisitsReport = (props) => {
   const [endDate, setEndDate] = useState(new Date());
   const [average, setAverage] = useState(0);
 
-  const displayResults = (response) => {
-    const queryResult = response.result.reports[0].data.rows;
-    const total = response.result.reports[0].data.totals[0].values[0];
-    setAverage(parseInt(total / response.result.reports[0].data.rowCount));
+  const { fetchData } = useQueryReport();
+
+  const displayResults = useCallback((response) => {
+    const queryResult = response.reports[0].data.rows;
+    const total = response.reports[0].data.totals[0].values[0];
+    setAverage(parseInt(total / response.reports[0].data.rowCount));
     let labels = [];
     let values = [];
     queryResult.forEach((row) => {
       labels.push(formatDate(row.dimensions[0]));
       values.push(row.metrics[0].values[0]);
     });
-    setReportData({
-      ...reportData,
+    setReportData(prev => ({
+      ...prev,
       labels,
       values,
-    });
-  };
+    }));
+  },[]);
 
   const data = {
     labels: reportData.labels,
@@ -94,10 +96,10 @@ const DayVisitsReport = (props) => {
       metrics: props.metric,
       dimensions: ["ga:date"],
     };
-    queryReport(request)
+    fetchData(request)
       .then((resp) => displayResults(resp))
       .catch((error) => console.error(error));
-  }, [startDate, endDate]);
+  }, [startDate, endDate, props.viewID, props.metric, fetchData, displayResults]);
 
   return (
     <ReportWrapper>

@@ -3,9 +3,9 @@ import { Pie } from "react-chartjs-2";
 import { PieChartWrapper, colors } from "./styles";
 import { addDays } from "date-fns";
 import CustomDatePicker from "./datepicker";
-import { queryReport } from "./queryReport";
 import { ChartTitle, ReportWrapper, Subtitle, DatepickerRow } from "./styles";
 import "chartjs-plugin-datalabels";
+import { useQueryReport } from "../hooks/useQueryReport";
 
 const CountriesReport = (props) => {
   const INITIAL_STATE = {
@@ -16,30 +16,8 @@ const CountriesReport = (props) => {
   const [reportData, setReportData] = useState(INITIAL_STATE);
   const [startDate, setStartDate] = useState(addDays(new Date(), -10));
   const [endDate, setEndDate] = useState(new Date());
-  const [totalCoutries, setTotalCountries] = useState(0);
-  const [totalUsers, setTotalUsers] = useState(0);
 
-  const displayResults = (response) => {
-    const queryResult = response.result.reports[0].data.rows;
-    setTotalUsers(response.result.reports[0].data.totals[0].values[0]);
-    setTotalCountries(queryResult.length);
-    let labels = [];
-    let values = [];
-    let bgColors = [];
-    queryResult.forEach((row, idx) => {
-      if (idx < 5) {
-        labels.push(row.dimensions[0]);
-        values.push(row.metrics[0].values[0]);
-        bgColors.push(colors[idx + 1]);
-      }
-    });
-    setReportData({
-      ...reportData,
-      labels,
-      values,
-      colors: bgColors,
-    });
-  };
+  const { fetchData } = useQueryReport();
 
   const data = {
     labels: reportData.labels,
@@ -66,7 +44,7 @@ const CountriesReport = (props) => {
           size: 20,
         },
         formatter: function (value, context) {
-          const perc = parseInt((value / totalUsers) * 100);
+          const perc = parseInt((value / reportData.totalUsers) * 100);
           return perc + "%";
         },
       },
@@ -85,19 +63,42 @@ const CountriesReport = (props) => {
         order: "DESCENDING",
       },
     };
+
+    const displayResults = (response) => {
+      const queryResult = response.reports[0].data.rows;
+      let labels = [];
+      let values = [];
+      let bgColors = [];
+      queryResult.forEach((row, idx) => {
+        if (idx < 5) {
+          labels.push(row.dimensions[0]);
+          values.push(row.metrics[0].values[0]);
+          bgColors.push(colors[idx + 1]);
+        }
+      });
+      setReportData(prev =>({
+        ...prev,
+        labels,
+        values,
+        colors: bgColors,
+        totalCoutries: queryResult.length,
+        totalUsers: response.reports[0].data.totals[0].values[0],
+      }));
+    };
+
     setTimeout(
       () =>
-        queryReport(request)
+        fetchData(request)
           .then((resp) => displayResults(resp))
           .catch((error) => console.error(error)),
       1000
     );
-  }, [startDate, endDate]);
+  }, [startDate, endDate, props.viewID, fetchData]);
 
   return (
     <ReportWrapper>
       <ChartTitle>Top 5 Countries by Users</ChartTitle>
-      <Subtitle>{`Total countries - ${totalCoutries}`}</Subtitle>
+      <Subtitle>{`Total countries - ${reportData.totalCoutries}`}</Subtitle>
       <DatepickerRow>
         <CustomDatePicker
           placeholder={"Start date"}

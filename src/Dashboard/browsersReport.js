@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { addDays } from "date-fns";
 import { Pie } from "react-chartjs-2";
 import CustomDatePicker from "./datepicker";
-import { queryReport } from "./queryReport";
 import { ChartTitle, Subtitle, PieChartWrapper, colors } from "./styles";
+import { useQueryReport } from "../hooks/useQueryReport";
 
 const BrowsersReport = (props) => {
   const INITIAL_STATE = {
@@ -16,25 +16,30 @@ const BrowsersReport = (props) => {
   const [endDate, setEndDate] = useState(new Date());
   const [totalUsers, setTotalUsers] = useState(0);
 
-  const displayResults = (response) => {
-    const queryResult = response.result.reports[0].data.rows;
-    const total = response.result.reports[0].data.totals[0].values[0];
-    setTotalUsers(total);
-    let labels = [];
-    let values = [];
-    let bgColors = [];
-    queryResult.forEach((row, id) => {
-      labels.push(row.dimensions[0]);
-      values.push(row.metrics[0].values[0]);
-      bgColors.push(colors[id]);
-    });
-    setReportData({
-      ...reportData,
-      labels,
-      values,
-      colors: bgColors,
-    });
-  };
+  const { fetchData } = useQueryReport();
+
+  const displayResults = useCallback(
+    (response) => {
+      const queryResult = response.reports[0].data.rows;
+      const total = response.reports[0].data.totals[0].values[0];
+      setTotalUsers(total);
+      let labels = [];
+      let values = [];
+      let bgColors = [];
+      queryResult.forEach((row, id) => {
+        labels.push(row.dimensions[0]);
+        values.push(row.metrics[0].values[0]);
+        bgColors.push(colors[id]);
+      });
+      setReportData(prev =>({
+        ...prev,
+        labels,
+        values,
+        colors: bgColors,
+      }));
+    },
+    []
+  );
 
   const data = {
     labels: reportData.labels,
@@ -68,12 +73,12 @@ const BrowsersReport = (props) => {
     };
     setTimeout(
       () =>
-        queryReport(request)
+        fetchData(request)
           .then((resp) => displayResults(resp))
           .catch((error) => console.error(error)),
       1500
     );
-  }, [startDate, endDate]);
+  }, [displayResults, endDate, fetchData, props.viewID, startDate]);
 
   return (
     <div>
