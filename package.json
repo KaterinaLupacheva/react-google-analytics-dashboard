@@ -1,21 +1,18 @@
 {
   "name": "google-analytics-dashboard",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "chart.js": "^2.9.3",
-    "chartjs-plugin-datalabels": "^0.7.0",
-    "date-fns": "^2.12.0",
-    "react": "^16.13.1",
-    "react-chartjs-2": "^2.9.0",
-    "react-datepicker": "^2.14.1",
-    "react-dom": "^16.13.1",
-    "react-icons": "^3.10.0",
-    "react-scripts": "3.4.1",
-    "styled-components": "^5.1.0"
+    "chart.js": "^3.9.1",
+    "chartjs-plugin-datalabels": "^2.1.0",
+    "date-fns": "^2.29.3",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^4.3.1",
+    "react-datepicker": "^4.8.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.6.0",
+    "react-scripts": "^5.0.1",
+    "styled-components": "^5.3.6"
   },
   "scripts": {
     "start": "react-scripts start",
